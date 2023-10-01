@@ -5,28 +5,48 @@ from src.board import Board
 from src.dragger import Dragger
 from src.config import Config
 from src.square import Square
+from src.button import Button
 
-
-demo_col = (255,255, 210)
+demo_col = (255,255,210)
 txt_col = (18,18,18)
 
+def command_S():
+    print("Command S")
 
+def command_X():
+    print("Command X")
+
+def command_Z():
+    print("Command Z")
+
+def command_H():
+    print("Command H")
+    
 def draw_text(surface,text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     surface.blit(img, (x, y))
 
-class Game:
 
+class Game:
+    
     def __init__(self):
         self.next_player = 'white'
         self.hovered_sqr = None
         self.board = Board()
         self.dragger = Dragger()
         self.config = Config()
+        self.buttonS = Button(900,400,80,80, 'S', command=command_S)
+        self.buttonX = Button(1050,400,80,80, 'X', command=command_X)
+        self.buttonZ = Button(900,550,80,80, 'Z', command=command_Z)
+        self.buttonH = Button(1050,550,80,80, 'H', command=command_H)   
+
 
     # blit methods
 
+
     def show_bg(self, surface):
+        
+
         theme = self.config.theme
         
         for row in range(ROWS):
@@ -53,8 +73,11 @@ class Game:
         pygame.draw.rect(surface, demo_col, demo)
         
         draw_text(surface, f'Current cat\'s state: {self.board.cat.state}' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
-
- 
+          
+        self.buttonS.process(surface)
+        self.buttonX.process(surface)
+        self.buttonZ.process(surface)
+        self.buttonH.process(surface)
 	    #draw_text(f'Paddel type: { player_paddle.species }', pygame.font.SysFont('calibri', 20), text_col, \
      #20+play_width, 40)
 
