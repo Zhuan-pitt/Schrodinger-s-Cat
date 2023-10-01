@@ -31,9 +31,12 @@ class Pawn(Piece):
         super().__init__('pawn', color, 1.0)
 
 class Cat(Piece):
-    def __init__(self, color):
+    def __init__(self, color,locaton):
         self.state = np.array([1,0])
+        self.last_location = locaton
+        self.location = locaton
         super().__init__('cat', 'white', 10000.0)
+        
 
 class Knight(Piece):
 

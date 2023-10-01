@@ -11,9 +11,28 @@ class Board:
     def __init__(self):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
+        self.cat = Cat('white',[4,4])
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
+    
+    
+    def superposition_move(self,piece,move): 
+        initial = move.initial
+        final = move.final
+
+        # console board move update
+        self.squares[initial.row][initial.col].piece = piece
+        self.squares[final.row][final.col].piece = piece
+        # move
+        piece.moved = True
+        # set last move
+        self.last_move = move   
+        
+    def collapse(self,piece):
+        
+        # clear valid moves
+        piece.clear_moves()
 
     def move(self, piece, move, testing=False):
         initial = move.initial
@@ -22,8 +41,6 @@ class Board:
         # console board move update
         self.squares[initial.row][initial.col].piece = None
         self.squares[final.row][final.col].piece = piece
-
-
         # move
         piece.moved = True
 
@@ -37,6 +54,7 @@ class Board:
         return move in piece.moves
 
 
+    
     def calc_moves(self, piece, row, col, bool=True):
         '''
             Calculate all the possible (valid) moves of an specific piece on a specific position
@@ -69,11 +87,8 @@ class Board:
                         move = Move(initial, final)
                         
                         # check potencial checks
-                        if bool:
-                            piece.add_move(move)
-                        else:
-                            # append new move
-                            piece.add_move(move)
+                        piece.add_move(move)
+
 
         def cat_moves():
             adjs = [
@@ -105,37 +120,6 @@ class Board:
                         else:
                             # append new move
                             piece.add_move(move)
-        def king_moves():
-            adjs = [
-                (row-1, col+0), # up
-                (row-1, col+1), # up-right
-                (row+0, col+1), # right
-                (row+1, col+1), # down-right
-                (row+1, col+0), # down
-                (row+1, col-1), # down-left
-                (row+0, col-1), # left
-                (row-1, col-1), # up-left
-            ]
-
-            # normal moves
-            for possible_move in adjs:
-                possible_move_row, possible_move_col = possible_move
-
-                if Square.in_range(possible_move_row, possible_move_col):
-                    if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
-                        # create squares of the new move
-                        initial = Square(row, col)
-                        final = Square(possible_move_row, possible_move_col) # piece=piece
-                        # create new move
-                        move = Move(initial, final)
-                        # check potencial checks
-                        if bool:
-                            piece.add_move(move)
-                            
-                        else:
-                            # append new move
-                            piece.add_move(move)
-
         
 
         if isinstance(piece, Knight): 
@@ -143,9 +127,6 @@ class Board:
 
         elif isinstance(piece, Cat): 
             cat_moves()
-
-        elif isinstance(piece, King): 
-            king_moves()
 
     def _create(self):
         for row in range(ROWS):
@@ -159,8 +140,6 @@ class Board:
         self.squares[row_other][1] = Square(row_other, 1, Knight(color))
         self.squares[row_other][6] = Square(row_other, 6, Knight(color))
 
-        # king
-        self.squares[row_other][4] = Square(row_other, 4, King(color))
         
-        if color =='white':
-            self.squares[4][4] = Square(4, 4, Cat(color))
+        self.squares[self.cat.location[0]][self.cat.location[1]] = Square(self.cat.location[0],self.cat.location[1], self.cat)
+            

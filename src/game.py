@@ -52,7 +52,7 @@ class Game:
         
         pygame.draw.rect(surface, demo_col, demo)
         
-        draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
+        draw_text(surface, f'Current cat\'s state: {self.board.cat.state}' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
 
  
 	    #draw_text(f'Paddel type: { player_paddle.species }', pygame.font.SysFont('calibri', 20), text_col, \

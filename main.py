@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 import sys
 from src.const import *
 from src.game import Game
@@ -29,9 +30,37 @@ class Main:
             game.show_pieces(screen)
             game.show_hover(screen)
 
+            if game.next_player == 'white':
+                piece = board.cat
+                board.calc_moves(piece, board.cat.location[0],board.cat.location[1], bool=True)
+                    
+                
+                pygame.display.update()
+                random_move = piece.moves[np.random.randint(len(piece.moves))]
+                board.move(piece, random_move)
+                board.cat.location = [random_move.final.row,random_move.final.col]
+                board.cat.last_location = [random_move.initial.row,random_move.initial.col]
+             
+                if np.random.random()<0.5:    
+                    board.cat.state = np.sqrt(1/2)*np.array([1,1])
+                else:
+                    board.cat.state = np.sqrt(1/2)*np.array([1,-1])
+                    
+                    
+                pygame.time.wait(800)
+                
+                game.play_sound(False)            
+                game.show_bg(screen)
+                game.show_last_move(screen)    
+                game.show_pieces(screen)
+                game.next_turn()
+            
+            
             if dragger.dragging:
                 dragger.update_blit(screen)
-
+            
+            
+            
             for event in pygame.event.get():
 
                 # click
