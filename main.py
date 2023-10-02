@@ -34,13 +34,21 @@ class Main:
             game.show_hover(screen)
 
             if game.next_player == 'white':
+                pygame.display.update()
+                pygame.time.wait(600)
+                
+                board.collapse()  
+                game.show_bg(screen)  
+                game.show_pieces(screen) 
+                pygame.display.update()
+                pygame.time.wait(600)
+                
+                
                 piece = board.cat
                 board.calc_moves(piece, board.cat.location[0],board.cat.location[1], bool=True)
                     
-                
-                pygame.display.update()
                 random_move = piece.moves[np.random.randint(len(piece.moves))]
-                board.move(piece, random_move)
+                board.superposition_move(piece, random_move)
                 board.cat.location = [random_move.final.row,random_move.final.col]
                 board.cat.last_location = [random_move.initial.row,random_move.initial.col]
              
@@ -50,9 +58,8 @@ class Main:
                     board.cat.state = np.sqrt(1/2)*np.array([1,-1])
                     
                 
-                pygame.time.wait(800)
+                pygame.time.wait(600)
               
-
                 game.play_sound(False)            
                 game.show_bg(screen)
                 game.show_last_move(screen)    

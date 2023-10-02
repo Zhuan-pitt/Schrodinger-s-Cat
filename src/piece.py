@@ -36,6 +36,8 @@ class Cat(Piece):
         self.last_location = locaton
         self.location = locaton
         super().__init__('cat', 'white', 10000.0)
+    
+    
         
 
 class Knight(Piece):

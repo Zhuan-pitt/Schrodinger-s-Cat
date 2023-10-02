@@ -29,11 +29,31 @@ class Board:
         # set last move
         self.last_move = move   
         
-    def collapse(self,piece):
+    def collapse(self):
+        # console board move update
         
+        p_new = self.cat.state[1]**2/(np.linalg.norm(self.cat.state))**2
+        if np.random.random()<=p_new:
+            self.squares[ self.cat.last_location[0]][ self.cat.last_location[1]].piece = None
+            self.cat.state = np.array([0,1])
+        else:
+            self.squares[ self.cat.location[0]][ self.cat.location[1]].piece = None
+            self.cat.state = np.array([1,0])
+            self.cat.location =  self.cat.last_location
         # clear valid moves
-        piece.clear_moves()
-
+        self.cat.clear_moves()
+    
+    def measure(self):
+        p_new = self.cat.state[1]**2/(np.linalg.norm(self.cat.state))**2
+        if np.random.random()<=p_new:
+            self.squares[ self.cat.last_location[0]][ self.cat.last_location[1]].piece = None
+            self.cat.state = np.array([0,1])
+        else:
+            self.squares[ self.cat.location[0]][ self.cat.location[1]].piece = None
+            self.cat.state = np.array([1,0])
+            
+            
+    
     def move(self, piece, move, testing=False):
         initial = move.initial
         final = move.final

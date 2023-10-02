@@ -37,8 +37,9 @@ class Game:
         self.config = Config()
         self.buttonS = ButtonS(900,400,80,80, 'S')
         self.buttonX = ButtonX(1050,400,80,80, 'X')
-        self.buttonZ = ButtonZ(900,550,80,80, 'Z')
-        self.buttonH = ButtonH(1050,550,80,80, 'H')   
+        self.buttonZ = ButtonZ(900,500,80,80, 'Z')
+        self.buttonH = ButtonH(1050,500,80,80, 'H')   
+        self.buttonM = ButtonM(900,600,230,80, 'Measurement')   
 
     # blit methods
 
@@ -73,12 +74,13 @@ class Game:
         
         draw_text(surface, f'Current cat\'s state: {self.board.cat.state}' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
           
-        self.buttonS.process(surface)
-        self.buttonX.process(surface)
-        self.buttonZ.process(surface)
-        self.buttonH.process(surface)
-	    #draw_text(f'Paddel type: { player_paddle.species }', pygame.font.SysFont('calibri', 20), text_col, \
-     #20+play_width, 40)
+        self.buttonS.process(surface,self)
+        self.buttonX.process(surface,self)
+        self.buttonZ.process(surface,self)
+        self.buttonH.process(surface,self)
+        
+        self.buttonM.process(surface,self)
+
 
     
 
