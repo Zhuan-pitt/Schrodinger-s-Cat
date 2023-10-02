@@ -42,8 +42,7 @@ class Main:
                 game.show_pieces(screen) 
                 pygame.display.update()
                 pygame.time.wait(600)
-                
-                
+ 
                 piece = board.cat
                 board.calc_moves(piece, board.cat.location[0],board.cat.location[1], bool=True)
                     
@@ -79,9 +78,6 @@ class Main:
                     dragger.update_mouse(event.pos)
 
                     if dragger.mouseX > HEIGHT or dragger.mouseY > HEIGHT:
-                        
-                        
-
                         continue
 
                     clicked_row = dragger.mouseY // SQSIZE

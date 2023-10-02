@@ -10,17 +10,6 @@ from src.button import *
 demo_col = (255,255,210)
 txt_col = (18,18,18)
 
-def command_S():
-    print("Command S")
-
-def command_X():
-    print("Command X")
-
-def command_Z():
-    print("Command Z")
-
-def command_H():
-    print("Command H")
 
 def draw_text(surface,text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -35,11 +24,13 @@ class Game:
         self.board = Board()
         self.dragger = Dragger()
         self.config = Config()
-        self.buttonS = ButtonS(900,400,80,80, 'S')
-        self.buttonX = ButtonX(1050,400,80,80, 'X')
-        self.buttonZ = ButtonZ(900,500,80,80, 'Z')
-        self.buttonH = ButtonH(1050,500,80,80, 'H')   
-        self.buttonM = ButtonM(900,600,230,80, 'Measurement')   
+
+        # Initial number of each gate = 10 [test]
+        self.buttonS = ButtonS(885,400,80,80, 10, 'S')
+        self.buttonX = ButtonX(1035,400,80,80,10, 'X')
+        self.buttonZ = ButtonZ(885,500,80,80,10, 'Z')
+        self.buttonH = ButtonH(1035,500,80,80, 10,'H')   
+        self.buttonM = ButtonM(885,600,230,80,10, 'Measurement')   
 
     # blit methods
 
@@ -72,13 +63,16 @@ class Game:
         
         pygame.draw.rect(surface, demo_col, demo)
         
-        draw_text(surface, f'Current cat\'s state: {self.board.cat.state}' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
-          
+        draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 120)
+        draw_text(surface, f'{np.round(self.board.cat.state, 2)}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 160)
+
+        draw_text(surface, 'Schrödinger\'s cat is on large for:', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
+        draw_text(surface, f'{self.board.cat.stepcount} days', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 50)
+
         self.buttonS.process(surface,self)
         self.buttonX.process(surface,self)
         self.buttonZ.process(surface,self)
         self.buttonH.process(surface,self)
-        
         self.buttonM.process(surface,self)
 
 

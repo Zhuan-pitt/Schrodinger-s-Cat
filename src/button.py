@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-
+from src.config import Config
 
 def update_piece(game):
     state = game.board.cat.state
@@ -21,52 +21,86 @@ def update_piece(game):
 
 
 
-
 class Button():
 
-    def __init__(self, x, y, width, height, buttonText='Button'):
+    def __init__(self, x, y, width, height, num=0, buttonText='Button'):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.buttonText = buttonText
         self.font = pygame.font.SysFont('calibri', 25)
+        self.num = num
+        self.config = Config()
         self.fillColors = {
-            'normal': '#ffffff',
-            'hover': '#666666',
-            'pressed': '#333333',
+            'normal': [252,236,165],
+            'border_normal': [0,0,0],
+            'border_hover': [79, 158, 226],
+            'pressed': [203,167,55],
         }
 
         self.buttonSurface = pygame.Surface((self.width, self.height))
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
+        
         self.buttonSurf = self.font.render(buttonText, True, (20, 20, 20))
+
+        self.numSurface = pygame.Surface((40, 40))
+        self.numRect = pygame.Rect(self.x+self.width, self.y+40, 40, 40)
+        
         self.pressed = 1
 
-
     def process(self, surface,input):
+
         
+        
+
+        self.numSurf = self.font.render(f'{int(self.num)}', True, (10, 10, 10))
+        self.numSurface.blit(self.numSurf, [
+            self.numRect.width/2 - self.numSurf.get_rect().width/2,
+            self.numRect.height/2 - self.numSurf.get_rect().height/2
+        ])
+        surface.blit(self.numSurface, self.numRect)
+
+        # border of buttons
+
+        # border_coords = ((self.x, self.y), (self.x+self.width, self.y), (self.x+self.width, self.y+self.height), (self.x, self.y+self.height))
+        # border_thickness = 5
+        # pygame.draw.lines(surface, '#666666', True, (border_coords), border_thickness)
+
+        self.buttonSurface.blit(self.buttonSurf, [
+                    self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
+                    self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2
+                ])
+        
+        surface.blit(self.buttonSurface, self.buttonRect)
+
         mousePos = pygame.mouse.get_pos()
         self.buttonSurface.fill(self.fillColors['normal'])
+        self.numSurface.fill(self.fillColors['normal'])
+        pygame.draw.rect(surface, self.fillColors['border_normal'], (self.x, self.y, self.width, self.height), width=3)
+
         if self.buttonRect.collidepoint(mousePos):
-            self.buttonSurface.fill(self.fillColors['hover'])
-            if pygame.mouse.get_pressed()[0] and self.pressed == 1:
-                self.command(surface,input)
+            # self.buttonSurface.fill(self.fillColors['hover'])
+            pygame.draw.rect(surface, self.fillColors['border_hover'], (self.x, self.y, self.width, self.height), width=3)
+
+            if pygame.mouse.get_pressed()[0]:
                 self.buttonSurface.fill(self.fillColors['pressed'])
-                self.pressed = 0
+                self.config.button_sound.play()
+                if self.pressed == 1 and self.num>0:
+                    self.command(surface,input)
+                    self.pressed = 0
+                    self.num -= 1
+
             if pygame.mouse.get_pressed() == (0,0,0):
                 self.pressed = 1
+
         
-        self.buttonSurface.blit(self.buttonSurf, [
-            self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
-            self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2
-        ])
-        surface.blit(self.buttonSurface, self.buttonRect)
-    
+        
 
 class ButtonS(Button):
     def command(self,surface1,game):
         S = np.array([[1,0],[0,1]])
-        print('SSS')
+        print('S')
         game.board.cat.state = S@game.board.cat.state 
         game.show_pieces(surface1) 
 
@@ -74,7 +108,7 @@ class ButtonX(Button):
     def command(self,surface,game):
         X = np.array([[0,1],[1,0]])
         
-            
+        print('X')
         game.board.cat.state = X@game.board.cat.state  
         update_piece(game)      
         game.show_pieces(surface) 
@@ -82,6 +116,7 @@ class ButtonX(Button):
 class ButtonZ(Button):
     def command(self,surface,game):
         Z= np.array([[1,0],[0,-1]])
+        print('Z')
         game.board.cat.state = Z@game.board.cat.state
         game.show_pieces(surface) 
 
@@ -90,7 +125,7 @@ class ButtonZ(Button):
 class ButtonH(Button):
     def command(self,surface,game):
         H = np.sqrt(1/2)*np.array([[1,1],[1,-1]])
-        
+        print("H")
         
         game.board.cat.state = H@game.board.cat.state
         update_piece(game)  
@@ -100,4 +135,5 @@ class ButtonH(Button):
     
 class ButtonM(Button):
     def command(self,surface,game):
+        print("Measure")
         game.board.measure()

@@ -31,10 +31,11 @@ class Pawn(Piece):
         super().__init__('pawn', color, 1.0)
 
 class Cat(Piece):
-    def __init__(self, color,locaton):
+    def __init__(self, color,locaton,stepcount=0):
         self.state = np.array([1,0])
         self.last_location = locaton
         self.location = locaton
+        self.stepcount = stepcount
         super().__init__('cat', 'white', 10000.0)
     
     

@@ -63,7 +63,7 @@ class Board:
         self.squares[final.row][final.col].piece = piece
         # move
         piece.moved = True
-
+        self.cat.stepcount += 1
         # clear valid moves
         piece.clear_moves()
 
