@@ -5,7 +5,7 @@ from src.board import Board
 from src.dragger import Dragger
 from src.config import Config
 from src.square import Square
-from src.button import Button
+from src.button import *
 
 demo_col = (255,255,210)
 txt_col = (18,18,18)
@@ -21,7 +21,7 @@ def command_Z():
 
 def command_H():
     print("Command H")
-    
+
 def draw_text(surface,text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     surface.blit(img, (x, y))
@@ -35,11 +35,10 @@ class Game:
         self.board = Board()
         self.dragger = Dragger()
         self.config = Config()
-        self.buttonS = Button(900,400,80,80, 'S', command=command_S)
-        self.buttonX = Button(1050,400,80,80, 'X', command=command_X)
-        self.buttonZ = Button(900,550,80,80, 'Z', command=command_Z)
-        self.buttonH = Button(1050,550,80,80, 'H', command=command_H)   
-
+        self.buttonS = ButtonS(900,400,80,80, 'S')
+        self.buttonX = ButtonX(1050,400,80,80, 'X')
+        self.buttonZ = ButtonZ(900,550,80,80, 'Z')
+        self.buttonH = ButtonH(1050,550,80,80, 'H')   
 
     # blit methods
 

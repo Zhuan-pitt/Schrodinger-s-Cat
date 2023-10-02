@@ -5,11 +5,13 @@ from src.const import *
 from src.game import Game
 from src.square import Square
 from src.move import Move
+from src.button import Button
 
 
 class Main:
 
     def __init__(self):
+        
         pygame.init()
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT))
         pygame.display.set_caption('Chess')
@@ -23,6 +25,7 @@ class Main:
         dragger = self.game.dragger
 
         while True:
+          
             # show methods
             game.show_bg(screen)
             game.show_last_move(screen)
@@ -46,9 +49,10 @@ class Main:
                 else:
                     board.cat.state = np.sqrt(1/2)*np.array([1,-1])
                     
-                    
-                pygame.time.wait(800)
                 
+                pygame.time.wait(800)
+              
+
                 game.play_sound(False)            
                 game.show_bg(screen)
                 game.show_last_move(screen)    
@@ -66,6 +70,12 @@ class Main:
                 # click
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     dragger.update_mouse(event.pos)
+
+                    if dragger.mouseX > HEIGHT or dragger.mouseY > HEIGHT:
+                        
+                        
+
+                        continue
 
                     clicked_row = dragger.mouseY // SQSIZE
                     clicked_col = dragger.mouseX // SQSIZE

@@ -2,12 +2,12 @@ import pygame
 
 class Button():
 
-    def __init__(self, x, y, width, height, buttonText='Button', command=lambda: print("press")):
+    def __init__(self, x, y, width, height, buttonText='Button'):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.command = command
+        self.buttonText = buttonText
         self.font = pygame.font.SysFont('calibri', 25)
         self.fillColors = {
             'normal': '#ffffff',
@@ -19,6 +19,9 @@ class Button():
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.buttonSurf = self.font.render(buttonText, True, (20, 20, 20))
         self.pressed = 1
+
+    # def command(self):
+    #     print(self.buttonText)
 
     def process(self, surface):
         
@@ -38,3 +41,20 @@ class Button():
             self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2
         ])
         surface.blit(self.buttonSurface, self.buttonRect)
+    
+
+class ButtonS(Button):
+    def command(self):
+        print("SSSS")
+
+class ButtonX(Button):
+    def command(self):
+        print("XXXX")
+
+class ButtonZ(Button):
+    def command(self):
+        print("ZZZZ")
+
+class ButtonH(Button):
+    def command(self):
+        print("HHHH")
