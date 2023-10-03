@@ -16,6 +16,7 @@ class Main:
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT))
         pygame.display.set_caption('Chess')
         self.game = Game()
+        self.cat_captured = False
 
     def mainloop(self):
         
@@ -23,26 +24,32 @@ class Main:
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
+        
 
         while True:
           
             # show methods
+            board.add_gate()
             game.show_bg(screen)
             game.show_last_move(screen)
             game.show_moves(screen)
             game.show_pieces(screen)
             game.show_hover(screen)
+            
 
-            if game.next_player == 'white':
-                pygame.display.update()
-                pygame.time.wait(600)
-                
-                board.collapse()  
+            if game.next_player == 'white' and self.cat_captured == False:
                 game.show_bg(screen)  
                 game.show_pieces(screen) 
                 pygame.display.update()
                 pygame.time.wait(600)
- 
+                
+                board.collapse()  
+                game.config.collapse_sound.play()
+                game.show_bg(screen)  
+                game.show_pieces(screen) 
+                pygame.display.update()
+                pygame.time.wait(600)
+                pygame.display.update()
                 piece = board.cat
                 board.calc_moves(piece, board.cat.location[0],board.cat.location[1], bool=True)
                     
@@ -65,6 +72,8 @@ class Main:
                 game.show_pieces(screen)
                 game.next_turn()
             
+            
+            game.show_pieces(screen)
             
             if dragger.dragging:
                 dragger.update_blit(screen)
@@ -135,12 +144,67 @@ class Main:
 
                             # valid move ?
                             if board.valid_move(dragger.piece, move):
-                                # normal capture
-                                captured = board.squares[released_row][released_col].has_piece()
-                                board.move(dragger.piece, move)
-
-                                # sounds
+                                
+                                # capture cat
+                                
+                                if [released_row , released_col] == board.cat.location: 
+                                    if np.random.random()<= abs(board.cat.state[1])**2:
+                                        self.cat_captured = True
+                                        game.config.cat_sound.play()
+                                        board.squares[board.cat.last_location[0]][board.cat.last_location[1]].piece = None
+                                        
+                                    else:
+                                        board.cat.location = board.cat.last_location
+                                        board.cat.state = np.array([1,0])
+                                    
+                                    game.show_bg(screen)  
+                                    game.show_pieces(screen) 
+                                    pygame.display.update()
+                                    
+                                elif [released_row , released_col] == board.cat.last_location: 
+                                    if np.random.random()<= abs(board.cat.state[0])**2:
+                                        self.cat_captured = True
+                                        game.config.cat_sound.play()
+                                        board.squares[board.cat.location[0]][board.cat.location[1]].piece = None
+                                    
+                                    else:
+                                        board.cat.last_location = board.cat.location
+                                        board.cat.state = np.array([0,1])
+                                    game.show_bg(screen)  
+                                    game.show_pieces(screen) 
+                                    pygame.display.update()
+                                
+                                
+                                        
+                                else:
+                                
+                                    # normal capture (gates)
+                                    captured = board.squares[released_row][released_col].has_piece()
+                                    
+                                    if captured:    
+                                        gate =  board.squares[released_row][released_col].piece
+                                        
+                                        if gate.name == 'S':
+                                            game.buttonS.num = game.buttonS.num+1
+                                            board.gate_onboard = False
+                                        if gate.name == 'M':
+                                            game.buttonM.num = game.buttonM.num+1
+                                            board.gate_onboard = False
+                                        if gate.name == 'X':
+                                            game.buttonX.num = game.buttonX.num+1
+                                            board.gate_onboard = False
+                                        if gate.name == 'Z':
+                                            game.buttonZ.num = game.buttonZ.num+1
+                                            board.gate_onboard = False
+                                        if gate.name == 'H':
+                                            game.buttonH.num = game.buttonH.num+1
+                                            board.gate_onboard = False
+                                
+                                    # sounds
                                 game.play_sound(captured)
+                                
+                                board.move(dragger.piece, move)
+                                
                                 # show methods
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
@@ -159,14 +223,21 @@ class Main:
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
+                        self.cat_captured = False
                     
                     if event.key == pygame.K_q:
                         pygame.quit()
                         sys.exit()
+                        
 
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+            
+            
+            
+            if self.cat_captured == True:
+                game.gameover(screen)    
             
             pygame.display.update()
 

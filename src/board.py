@@ -13,8 +13,9 @@ class Board:
         self.last_move = None
         self.cat = Cat('white',[4,4])
         self._create()
-        self._add_pieces('white')
+        #self._add_pieces('white')
         self._add_pieces('black')
+        self.gate_onboard = False
     
     
     def superposition_move(self,piece,move): 
@@ -33,10 +34,10 @@ class Board:
         # console board move update
         
         p_new = self.cat.state[1]**2/(np.linalg.norm(self.cat.state))**2
-        if np.random.random()<=p_new:
+        if np.random.random()<=p_new and self.cat.last_location != self.cat.location:
             self.squares[ self.cat.last_location[0]][ self.cat.last_location[1]].piece = None
             self.cat.state = np.array([0,1])
-        else:
+        elif self.cat.last_location != self.cat.location:
             self.squares[ self.cat.location[0]][ self.cat.location[1]].piece = None
             self.cat.state = np.array([1,0])
             self.cat.location =  self.cat.last_location
@@ -73,7 +74,17 @@ class Board:
     def valid_move(self, piece, move):
         return move in piece.moves
 
+    def add_gate(self,list=[S(),H(),X(),Z(),M()]):
+        if self.gate_onboard ==False:
+            x = np.random.randint(ROWS)
+            y = np.random.randint(COLS)
+            if self.squares[x][y].isempty() == True:
+                p = np.random.randint(len(list))
+                self.squares[x][y] = Square(x,y, (list[p]))
+                self.gate_onboard = True
 
+            else:
+                self.add_gate(list=list)
     
     def calc_moves(self, piece, row, col, bool=True):
         '''
@@ -127,7 +138,7 @@ class Board:
                 possible_move_row, possible_move_col = possible_move
 
                 if Square.in_range(possible_move_row, possible_move_col):
-                    if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
+                    if self.squares[possible_move_row][possible_move_col].isempty():
                         # create squares of the new move
                         initial = Square(row, col)
                         final = Square(possible_move_row, possible_move_col) # piece=piece

@@ -26,11 +26,11 @@ class Game:
         self.config = Config()
 
         # Initial number of each gate = 10 [test]
-        self.buttonS = ButtonS(885,400,80,80, 10, 'S')
-        self.buttonX = ButtonX(1035,400,80,80,10, 'X')
-        self.buttonZ = ButtonZ(885,500,80,80,10, 'Z')
-        self.buttonH = ButtonH(1035,500,80,80, 10,'H')   
-        self.buttonM = ButtonM(885,600,230,80,10, 'Measurement')   
+        self.buttonS = ButtonS(885,400,80,80, 1, 'S')
+        self.buttonX = ButtonX(1035,400,80,80,1, 'X')
+        self.buttonZ = ButtonZ(885,500,80,80,1, 'Z')
+        self.buttonH = ButtonH(1035,500,80,80, 1,'H')   
+        self.buttonM = ButtonM(885,600,230,80,1, 'M')   
 
     # blit methods
 
@@ -76,7 +76,14 @@ class Game:
         self.buttonM.process(surface,self)
 
 
-    
+    def gameover(self,surface):
+        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
+        pygame.draw.rect(surface, demo_col, demo)
+        draw_text(surface, f'You capture Schrödinger\'s cat in {self.board.cat.stepcount} days!' ,\
+            pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+        draw_text(surface, f'Press r to restart' ,\
+            pygame.font.SysFont('calibri', 30), txt_col,10+COLS//3*SQSIZE, COLS//3*SQSIZE+60)
+        
 
 
     def show_pieces(self, surface):

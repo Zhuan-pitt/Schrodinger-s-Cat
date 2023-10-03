@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from src.config import Config
-
+import os
 def update_piece(game):
     state = game.board.cat.state
     if np.linalg.norm(state-np.array([1,0])) <=1e-10:
@@ -23,12 +23,12 @@ def update_piece(game):
 
 class Button():
 
-    def __init__(self, x, y, width, height, num=0, buttonText='Button'):
+    def __init__(self, x, y, width, height, num=0, name='Button'):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.buttonText = buttonText
+        self.name = name
         self.font = pygame.font.SysFont('calibri', 25)
         self.num = num
         self.config = Config()
@@ -42,9 +42,11 @@ class Button():
         self.buttonSurface = pygame.Surface((self.width, self.height))
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
         
-        self.buttonSurf = self.font.render(buttonText, True, (20, 20, 20))
+        self.buttonSurf = self.font.render(name, True, (20, 20, 20))
 
         self.numSurface = pygame.Surface((40, 40))
+        
+        
         self.numRect = pygame.Rect(self.x+self.width, self.y+40, 40, 40)
         
         self.pressed = 1
@@ -60,6 +62,9 @@ class Button():
             self.numRect.height/2 - self.numSurf.get_rect().height/2
         ])
         surface.blit(self.numSurface, self.numRect)
+        
+        
+        
 
         # border of buttons
 
@@ -100,7 +105,6 @@ class Button():
 class ButtonS(Button):
     def command(self,surface1,game):
         S = np.array([[1,0],[0,1]])
-        print('S')
         game.board.cat.state = S@game.board.cat.state 
         game.show_pieces(surface1) 
 
@@ -108,7 +112,6 @@ class ButtonX(Button):
     def command(self,surface,game):
         X = np.array([[0,1],[1,0]])
         
-        print('X')
         game.board.cat.state = X@game.board.cat.state  
         update_piece(game)      
         game.show_pieces(surface) 
@@ -116,7 +119,6 @@ class ButtonX(Button):
 class ButtonZ(Button):
     def command(self,surface,game):
         Z= np.array([[1,0],[0,-1]])
-        print('Z')
         game.board.cat.state = Z@game.board.cat.state
         game.show_pieces(surface) 
 
@@ -125,7 +127,6 @@ class ButtonZ(Button):
 class ButtonH(Button):
     def command(self,surface,game):
         H = np.sqrt(1/2)*np.array([[1,1],[1,-1]])
-        print("H")
         
         game.board.cat.state = H@game.board.cat.state
         update_piece(game)  
@@ -135,5 +136,4 @@ class ButtonH(Button):
     
 class ButtonM(Button):
     def command(self,surface,game):
-        print("Measure")
         game.board.measure()

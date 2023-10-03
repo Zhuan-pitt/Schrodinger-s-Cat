@@ -17,6 +17,10 @@ class Config:
             os.path.join('assets/sounds/capture.wav'))
         self.button_sound = Sound(
             os.path.join('assets/sounds/button.wav'))
+        self.cat_sound = Sound(
+            os.path.join('assets/sounds/meow.wav'))
+        self.collapse_sound = Sound(
+            os.path.join('assets/sounds/swish.wav'))
 
     def change_theme(self):
         self.idx += 1
@@ -25,9 +29,5 @@ class Config:
 
     def _add_themes(self):
         #theme pattern = white, black,last black,last white,move on white,move on black
-        black = Theme('#f0f0f0','#1E1E1E','#64F0FF','#00DCF0','#F03232','#FAAAAA')
-        green = Theme('#C9FFDF','#00B44B','#64F0FF','#00DCF0','#F03232','#FAAAAA')
-        orange = Theme('#FFAF82','#E65000','#64F0FF','#00DCF0','#F03232','#FAAAAA')
         yellow = Theme('#FFEB9B','#D2A500','#64F0FF','#00DCF0','#F03232','#FAAAAA')
-        purple = Theme('#DCCDFF','#551EFF','#64F0FF','#00DCF0','#F03232','#FAAAAA')
         self.themes = [yellow]

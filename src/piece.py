@@ -23,6 +23,31 @@ class Piece:
     def clear_moves(self):
         self.moves = []
 
+class H(Piece):
+    def __init__(self):
+        
+        super().__init__('H', 'white', 10000.0)
+
+class X(Piece):
+    def __init__(self):
+        
+        super().__init__('X', 'white', 10000.0)
+
+class Z(Piece):
+    def __init__(self):
+        
+        super().__init__('Z', 'white', 10000.0)
+
+class S(Piece):
+    def __init__(self):
+        
+        super().__init__('S', 'white', 10000.0)
+
+class M(Piece):
+    def __init__(self):
+        
+        super().__init__('M', 'white', 10000.0)
+
 class Pawn(Piece):
 
     def __init__(self, color):
