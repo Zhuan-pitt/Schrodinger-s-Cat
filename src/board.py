@@ -6,9 +6,9 @@ from src.sound import Sound
 import copy
 import os
 
-class Board:
+class Board():
 
-    def __init__(self):
+    def __init__(self, level):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
         self.cat = Cat('white',[4,4])
@@ -16,6 +16,7 @@ class Board:
         #self._add_pieces('white')
         self._add_pieces('black')
         self.gate_onboard = False
+        self.level = level
     
     
     def superposition_move(self,piece,move): 
@@ -74,12 +75,15 @@ class Board:
     def valid_move(self, piece, move):
         return move in piece.moves
 
-    def add_gate(self,list=[S(),H(),X(),Z(),M()]):
+    def add_gate(self,list=[H(),S(), X(),Z(),M()]):
         if self.gate_onboard ==False:
             x = np.random.randint(ROWS)
             y = np.random.randint(COLS)
             if self.squares[x][y].isempty() == True:
-                p = np.random.randint(len(list))
+                if self.level == 1 or self.level > 2:
+                    p = np.random.randint(len(list))   # All gates are available in Level 1 and Level 3
+                elif self.level == 2:
+                    p = np.random.randint(2)    # Only H gate and S gate are available in Level 2
                 self.squares[x][y] = Square(x,y, (list[p]))
                 self.gate_onboard = True
 

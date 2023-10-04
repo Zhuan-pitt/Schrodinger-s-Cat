@@ -18,19 +18,21 @@ def draw_text(surface,text, font, text_col, x, y):
 
 class Game:
     
-    def __init__(self):
+    def __init__(self, level):
         self.next_player = 'white'
         self.hovered_sqr = None
-        self.board = Board()
+        self.level = level
+        self.board = Board(self.level)
         self.dragger = Dragger()
         self.config = Config()
+        self.maximum_step = 10      # Only apply to Level 3
 
-        # Initial number of each gate = 10 [test]
-        self.buttonS = ButtonS(885,400,80,80, 1, 'S')
-        self.buttonX = ButtonX(1035,400,80,80,1, 'X')
-        self.buttonZ = ButtonZ(885,500,80,80,1, 'Z')
-        self.buttonH = ButtonH(1035,500,80,80, 1,'H')   
-        self.buttonM = ButtonM(885,600,230,80,1, 'M')   
+        # Initial number of each gate = 0
+        self.buttonS = ButtonS(885,400,80,80, 0, 'S')
+        self.buttonX = ButtonX(1035,400,80,80,0, 'X')
+        self.buttonZ = ButtonZ(885,500,80,80,0, 'Z')
+        self.buttonH = ButtonH(1035,500,80,80,0,'H')   
+        self.buttonM = ButtonM(885,600,230,80,0, 'M')   
 
     # blit methods
 
@@ -59,15 +61,20 @@ class Game:
                     color = theme.bg.dark if (row + col) % 2 == 0 else theme.bg.light
         
         demo = pygame.Rect(COLS*SQSIZE, 0, WIDTH - COLS*SQSIZE, HEIGHT)            
-        
-        
         pygame.draw.rect(surface, demo_col, demo)
-        
-        draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 120)
-        draw_text(surface, f'{np.round(self.board.cat.state, 2)}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 160)
+        draw_text(surface, f'Level: {self.level}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 40)
+        draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 240)
+        draw_text(surface, f'{np.round(self.board.cat.state, 2)}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
 
-        draw_text(surface, 'Schrödinger\'s cat is on large for:', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 10)
-        draw_text(surface, f'{self.board.cat.stepcount} days', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 50)
+        if self.level < 3:
+            draw_text(surface, 'Schrödinger\'s cat is on large for:', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 120)
+            draw_text(surface, f'{self.board.cat.stepcount} days', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 160)
+            
+        elif self.level == 3:
+            draw_text(surface, 'You have to catch Schrödinger\'s', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 120)
+            draw_text(surface, f'cat in: {self.maximum_step - self.board.cat.stepcount} days', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 160)
+            
+
 
         self.buttonS.process(surface,self)
         self.buttonX.process(surface,self)
@@ -76,15 +83,26 @@ class Game:
         self.buttonM.process(surface,self)
 
 
-    def gameover(self,surface):
+    def gameover(self,surface):   # When all levels are completed
+        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
+        pygame.draw.rect(surface, demo_col, demo)
+        draw_text(surface, 'Congratulations! Press Q to quit.' ,\
+            pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+    
+    def lose(self, surface):
+        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
+        pygame.draw.rect(surface, demo_col, demo)
+        draw_text(surface, 'You lose! Press Q to quit.' ,\
+        pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+
+    def nextlevel(self,surface):
         demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
         pygame.draw.rect(surface, demo_col, demo)
         draw_text(surface, f'You capture Schrödinger\'s cat in {self.board.cat.stepcount} days!' ,\
             pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
-        draw_text(surface, f'Press r to restart' ,\
+        draw_text(surface, f'Press R to enter next level ' ,\
             pygame.font.SysFont('calibri', 30), txt_col,10+COLS//3*SQSIZE, COLS//3*SQSIZE+60)
         
-
 
     def show_pieces(self, surface):
         for row in range(ROWS):
@@ -156,5 +174,5 @@ class Game:
         else:
             self.config.move_sound.play()
 
-    def reset(self):
-        self.__init__()
+    def reset(self, level):
+        self.__init__(level)

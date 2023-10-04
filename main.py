@@ -13,11 +13,12 @@ class Main:
     def __init__(self):
         
         pygame.init()
+        self.level = 1
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT))
         pygame.display.set_caption('Chess')
-        self.game = Game()
+        self.game = Game(self.level)
         self.cat_captured = False
-
+        self.maximum_level = 3
     def mainloop(self):
         
         screen = self.screen
@@ -219,11 +220,15 @@ class Main:
                     
 
                     if event.key == pygame.K_r:
-                        game.reset()
+                    
+                        self.level += 1
+                        game.reset(self.level)
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
                         self.cat_captured = False
+                    
+                            
                     
                     if event.key == pygame.K_q:
                         pygame.quit()
@@ -234,10 +239,14 @@ class Main:
                     pygame.quit()
                     sys.exit()
             
-            
-            
             if self.cat_captured == True:
-                game.gameover(screen)    
+                if self.level < self.maximum_level:
+                    game.nextlevel(screen)
+                else:
+                    game.gameover(screen)
+                
+            if self.level == 3 and (self.game.maximum_step - self.game.board.cat.stepcount)==0:
+                game.lose(screen)
             
             pygame.display.update()
 
