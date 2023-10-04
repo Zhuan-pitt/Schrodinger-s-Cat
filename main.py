@@ -6,7 +6,7 @@ from src.game import Game
 from src.square import Square
 from src.move import Move
 from src.button import Button
-
+import json
 
 class Main:
 
@@ -15,8 +15,11 @@ class Main:
         pygame.init()
         self.level = 1
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT))
-        pygame.display.set_caption('Chess')
-        self.game = Game(self.level)
+        pygame.display.set_caption('Cat')
+        
+        with open("assets/wall_list.json", 'r') as f:
+            self.wall_list = json.load(f)
+        self.game = Game(self.level,self.wall_list)
         self.cat_captured = False
         self.maximum_level = 3
     def mainloop(self):
@@ -43,9 +46,10 @@ class Main:
                 game.show_pieces(screen) 
                 pygame.display.update()
                 pygame.time.wait(600)
-                
+                if abs(board.cat.state[1])!=1 and abs(board.cat.state[0])!=1:
+                    game.config.collapse_sound.play()
                 board.collapse()  
-                game.config.collapse_sound.play()
+                
                 game.show_bg(screen)  
                 game.show_pieces(screen) 
                 pygame.display.update()
@@ -68,13 +72,13 @@ class Main:
                 pygame.time.wait(600)
               
                 game.play_sound(False)            
-                game.show_bg(screen)
-                game.show_last_move(screen)    
-                game.show_pieces(screen)
+                game.show_bg(screen)  
+                game.show_pieces(screen) 
+                game.show_last_move(screen)  
                 game.next_turn()
             
             
-            game.show_pieces(screen)
+            #game.show_pieces(screen)
             
             if dragger.dragging:
                 dragger.update_blit(screen)
@@ -102,10 +106,12 @@ class Main:
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
                             # show methods 
-                            game.show_bg(screen)
+                            game.show_bg(screen)  
+                            game.show_pieces(screen)
                             game.show_last_move(screen)
                             game.show_moves(screen)
-                            game.show_pieces(screen)
+                            #game.show_pieces(screen)
+                            #pygame.display.update()
                 
                 # mouse motion
                 elif event.type == pygame.MOUSEMOTION:
@@ -124,6 +130,7 @@ class Main:
                             game.show_pieces(screen)
                             game.show_hover(screen)
                             dragger.update_blit(screen)
+                
                 
                 # click release
                 elif event.type == pygame.MOUSEBUTTONUP:
@@ -222,13 +229,11 @@ class Main:
                     if event.key == pygame.K_r:
                     
                         self.level += 1
-                        game.reset(self.level)
+                        game.reset(self.level,self.wall_list)
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
                         self.cat_captured = False
-                    
-                            
                     
                     if event.key == pygame.K_q:
                         pygame.quit()

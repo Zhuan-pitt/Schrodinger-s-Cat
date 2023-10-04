@@ -9,7 +9,7 @@ from src.button import *
 
 demo_col = (255,255,210)
 txt_col = (18,18,18)
-
+wall_col = (100,50,0)
 
 def draw_text(surface,text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -18,21 +18,21 @@ def draw_text(surface,text, font, text_col, x, y):
 
 class Game:
     
-    def __init__(self, level):
+    def __init__(self, level,wall_list):
         self.next_player = 'white'
         self.hovered_sqr = None
         self.level = level
-        self.board = Board(self.level)
+        self.board = Board(self.level,wall_list)
         self.dragger = Dragger()
         self.config = Config()
         self.maximum_step = 10      # Only apply to Level 3
-
         # Initial number of each gate = 0
-        self.buttonS = ButtonS(885,400,80,80, 0, 'S')
-        self.buttonX = ButtonX(1035,400,80,80,0, 'X')
-        self.buttonZ = ButtonZ(885,500,80,80,0, 'Z')
-        self.buttonH = ButtonH(1035,500,80,80,0,'H')   
-        self.buttonM = ButtonM(885,600,230,80,0, 'M')   
+        self.buttonS = ButtonS(885,400,80,80, 1, 'S')
+        self.buttonX = ButtonX(1035,400,80,80,1, 'X')
+        self.buttonZ = ButtonZ(885,500,80,80,1, 'Z')
+        self.buttonH = ButtonH(1035,500,80,80,1,'H')   
+        self.buttonM = ButtonM(885,600,230,80,1, 'M')
+           
 
     # blit methods
 
@@ -81,6 +81,13 @@ class Game:
         self.buttonZ.process(surface,self)
         self.buttonH.process(surface,self)
         self.buttonM.process(surface,self)
+        
+        for hwall in self.board.wall_list[0]:
+                wall_rec = pygame.Rect(hwall[1]*SQSIZE-SQSIZE/10, hwall[0]*SQSIZE-SQSIZE/10, SQSIZE*1.2,SQSIZE/5) 
+                pygame.draw.rect(surface,wall_col, wall_rec)
+        for vwall in self.board.wall_list[1]:
+                wall_rec = pygame.Rect(vwall[1]*SQSIZE-SQSIZE/10, vwall[0]*SQSIZE-SQSIZE/10, SQSIZE/5,SQSIZE*1.2) 
+                pygame.draw.rect(surface,wall_col, wall_rec)
 
 
     def gameover(self,surface):   # When all levels are completed
@@ -120,6 +127,9 @@ class Game:
                         piece.texture_rect = img.get_rect(center=img_center)
                         surface.blit(img, piece.texture_rect)
 
+    
+
+    
     def show_moves(self, surface):
         theme = self.config.theme
 
@@ -167,12 +177,13 @@ class Game:
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]
 
-
+    
+    
     def play_sound(self, captured=False):
         if captured:
             self.config.capture_sound.play()
         else:
             self.config.move_sound.play()
 
-    def reset(self, level):
-        self.__init__(level)
+    def reset(self, level,wall_list):
+        self.__init__(level,wall_list)

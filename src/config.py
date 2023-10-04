@@ -29,5 +29,5 @@ class Config:
 
     def _add_themes(self):
         #theme pattern = white, black,last black,last white,move on white,move on black
-        yellow = Theme('#FFEB9B','#D2A500','#64F0FF','#00DCF0','#F03232','#FAAAAA')
+        yellow = Theme('#FFEB9B','#D2A500','#64F0FF','#00DCF0',(240,50,50),'#FAAAAA')
         self.themes = [yellow]

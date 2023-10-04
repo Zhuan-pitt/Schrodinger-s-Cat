@@ -8,15 +8,21 @@ import os
 
 class Board():
 
-    def __init__(self, level):
+    def __init__(self, level, wall_list=[[[3,3],[3,4],[3,5],[3,8]],[[3,3],[4,3],[5,3]]]):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
-        self.cat = Cat('white',[4,4])
+        self.cat = Cat('white',[6,6])
         self._create()
         #self._add_pieces('white')
         self._add_pieces('black')
         self.gate_onboard = False
         self.level = level
+        self.wall_list = wall_list #[horizontal,vertical],[row, col]
+        
+        for hwall in self.wall_list[0]:
+            self.squares[hwall[0]][hwall[1]].has_hwall = True
+        for vwall in self.wall_list[1]:
+            self.squares[vwall[0]][vwall[1]].has_vwall = True
     
     
     def superposition_move(self,piece,move): 
@@ -90,6 +96,51 @@ class Board():
             else:
                 self.add_gate(list=list)
     
+    def not_blocked(self,start,end):
+        row_move = end[0]-start[0]
+        col_move = end[1]-start[1]
+        
+        #knight has two ways to move to the same position
+        
+        path1 = True # first row, then col
+        
+        if row_move>0:
+            for i in range(abs(row_move)):
+                path1 = path1 and not self.squares[start[0]+i+1][start[1]].has_hwall
+        if row_move<0:
+            for i in range(abs(row_move)):
+                
+                path1 = path1 and not self.squares[start[0]-i][start[1]].has_hwall        
+        if col_move>0:
+            for i in range(abs(col_move)):
+                path1 = path1 and not self.squares[start[0]+row_move][start[1]+i+1].has_vwall
+        if col_move<0:
+            for i in range(abs(col_move)):
+                path1 = path1 and not self.squares[start[0]+row_move][start[1]-i].has_vwall
+            
+        
+        
+        path2 = True
+        
+        if col_move>0:
+            for i in range(abs(col_move)):
+                path2 = path2 and not self.squares[start[0]][start[1]+i+1].has_vwall
+        if col_move<0:
+            for i in range(abs(col_move)):
+                path2 = path2 and not self.squares[start[0]][start[1]-i].has_vwall
+        
+        if row_move>0:
+            for i in range(abs(row_move)):
+                path2 = path2 and not self.squares[start[0]+i+1][start[1]+col_move].has_hwall
+        if row_move<0:
+            for i in range(abs(row_move)):
+                path2 = path2 and not self.squares[start[0]-i][start[1]+col_move].has_hwall
+        
+        return path1 or path2
+        
+        
+        
+    
     def calc_moves(self, piece, row, col, bool=True):
         '''
             Calculate all the possible (valid) moves of an specific piece on a specific position
@@ -98,6 +149,9 @@ class Board():
       
         def knight_moves():
             # 8 possible moves
+                
+                
+            
             possible_moves = [
                 (row-2, col+1),
                 (row-1, col+2),
@@ -113,16 +167,20 @@ class Board():
                 possible_move_row, possible_move_col = possible_move
 
                 if Square.in_range(possible_move_row, possible_move_col):
-                    if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
-                        # create squares of the new move
-                        initial = Square(row, col)
-                        final_piece = self.squares[possible_move_row][possible_move_col].piece
-                        final = Square(possible_move_row, possible_move_col, final_piece)
-                        # create new move
-                        move = Move(initial, final)
-                        
-                        # check potencial checks
-                        piece.add_move(move)
+                    
+                    if self.not_blocked([row,col],[possible_move_row,possible_move_col]):
+                    
+                    
+                        if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
+                            # create squares of the new move
+                            initial = Square(row, col)
+                            final_piece = self.squares[possible_move_row][possible_move_col].piece
+                            final = Square(possible_move_row, possible_move_col, final_piece)
+                            # create new move
+                            move = Move(initial, final)
+                            
+                            # check potencial checks
+                            piece.add_move(move)
 
 
         def cat_moves():
@@ -135,6 +193,19 @@ class Board():
                 (row+1, col-1), # down-left
                 (row+0, col-1), # left
                 (row-1, col-1), # up-left
+                (row-2, col+0), # up
+                (row-2, col+2), # up-right
+                (row+0, col+2), # right
+                (row+2, col+2), # down-right
+                (row+2, col+0), # down
+                (row+2, col-2), # down-left
+                (row+0, col-2), # left
+                (row-2, col-2), # up-left
+                (row-2, col+1), # up
+                (row+1, col+2), # right
+                (row+2, col+1), # down
+                (row+2, col-2), # down-left
+                (row+1, col-2), # left
             ]
 
             # normal moves
@@ -169,12 +240,10 @@ class Board():
                 self.squares[row][col] = Square(row, col)
 
     def _add_pieces(self, color):
-        row_pawn, row_other = (6, 7) if color == 'white' else (1, 0)
-
+    
         # knights
-        self.squares[row_other][1] = Square(row_other, 1, Knight(color))
-        self.squares[row_other][6] = Square(row_other, 6, Knight(color))
-
+        self.squares[0][0] = Square(0,0, Knight('black'))
+        
         
         self.squares[self.cat.location[0]][self.cat.location[1]] = Square(self.cat.location[0],self.cat.location[1], self.cat)
             
