@@ -1,73 +1,71 @@
-<h1 align="center">PyChess</h1>
-  <div align = "center">
-  <a>
-  <img src ="http://ForTheBadge.com/images/badges/made-with-python.svg" alt ="Python"/>
-    </a>
-    </div>
-  <p align = "center">
-<a href = 'https://code.visualstudio.com/'>
-  <img alt ='Visual Studio Code' src='https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg'/>
-  </a>
-  <a href="https://github.com/jaivardhan-bhola/PyChess" target="_blank">
-  <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
-</a>
-<a href="https://github.com/jaivardhan-bhola/PyChess/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-brightgreen.svg"></a>  
-<a href="https://twitter.com/BholaJaivardhan" target="_blank">
-<img alt="Twitter: BholaJaivardhan" src="https://img.shields.io/twitter/follow/BholaJaivardhan.svg?style=social" />
-</a>
-</p>
+# \[The name of game\]
+The Kingdom of Physics is in chaos since King Schrödinger's cat is missing. The king sends his grestest knight, you, to catch his cat. However, this unusual cat possesses an extraordinary ability of superposition: it can be found simutaneuously at two positions. Will you be able to track down the mysterious cat and bring the Kingdom of Physics back to calm? 
 
-# Table of Contents
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Screenshots](#screenshots)
-- [About the author](#about-the-author)
-- [Contribution](#contribution)
-- [Support Us](#show-your-support)
-- [License](#license)
+## Rules
+The game takes place on a 10 $\times$ 10 chessboard. At each step, the cat can move one square in any direction (the same as Kings in chess) and the knight can move as a "L" shape (the same as Knights in chess). The cat and the knight move alternatively. You are required to use one Knight to capture the cat. 
 
-# Description
-> PvP chess using Python
+However, the cat can be in a superposition state of two locations: the origin and the destination. It will only collapse to a determined location after the knight makes its move. In order to have a better chance capturing the cat, you can apply quantum gates on the cat to change its state before moving the knight. You can find four different quantum gates randomly locate on the board: Pauli-X gate ($X$), Pauli-Z gate ($Z$), Hadamard gate ($H$) and the phase gate ($S$). Additionally, you can find M on the board representing Measure, which allows you to measure the superposition state before moving the knight.
 
-# Installation
-<li> Fork the repo
-<li> Clone the repo
-<li> Navigate to the directory
-<li> Run
+Walls are added on the chessboard. The cat is always able to transpass through the wall (due to its high energy) but the knight will have to collect Energy Capsules from the chessboard to transpass through the wall via quantum tunneling effect xD
 
-```
-pip install -r requirements.txt
-```
+## Theory of Quantum gates behind the game
+
+Here we denote the state of the cat at the origin at each step as $|1\rangle$ and at the destination as $|2\rangle$. After the cat makes the move, it will be in the superposition state of $|1\rangle$ and $|2\rangle$, i.e.
+$$
+\begin{equation}
+\Psi_{cat}=\frac{|1\rangle+|2\rangle}{\sqrt{2}}
+\end{equation}
+$$
+Therefore, the cat has equal probabilities remaining at the origin or jump to the destination.
+
+The Pauli-X gate is defined as 
+$$
+\begin{equation}
+X=\left[\begin{array}{ll}
+0 & 1 \\
+1 & 0
+\end{array}\right]
+\end{equation}
+$$
+which can switch state $|1\rangle$ to $|2\rangle$ and $|2\rangle$ to $|1\rangle$.
 
 
-# Usage
-```
-python main.py
-```
+The Pauli-Z gate is defined as 
+$$
+\begin{equation}
+Z=\left[\begin{array}{cc}
+1 & 0 \\
+0 & -1
+\end{array}\right]
+\end{equation}
+$$
+which can switch state $|2\rangle$ to $-|2\rangle$ and keep $|1\rangle$ unchanged.
 
-# Screenshots
-![screenshot](https://raw.githubusercontent.com/jaivardhan-bhola/PyChess/main/screenshots/1.png
-)![screenshot](https://raw.githubusercontent.com/jaivardhan-bhola/PyChess/main/screenshots/2.png
-)![screenshot](https://raw.githubusercontent.com/jaivardhan-bhola/PyChess/main/screenshots/3.png
-)![screenshot](https://raw.githubusercontent.com/jaivardhan-bhola/PyChess/main/screenshots/4.png
-)![screenshot](https://raw.githubusercontent.com/jaivardhan-bhola/PyChess/main/screenshots/5.png)
 
-# About-the-author
-[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jaivardhan-bhola)
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/jaivardhan-bhola-773944214)
-[![Twitter](https://img.shields.io/badge/BholaJaivardhan-%231DA1F2.svg?style=for-the-badge&logo=Twitter&logoColor=white)](https://twitter.com/BholaJaivardhan)
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jaivardhan.bhola@gmail.com)
+Hadamard gate $H$ is defined
+$$
+\begin{equation}
+H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}
+1 & 1 \\
+1 & -1
+\end{array}\right]
+\end{equation}
+$$
 
-# Contribution
-If you would like to contribute to this project reach out to me. Contact Information can be found below or by clicking on the 'Contact-Information' link provided in the Table of Contents.
+Phase gate $S$ is defined as
+$$
+\begin{equation}
+S=\left[\begin{array}{cc}
+1 & 0 \\
+0 & e^{i \frac{\pi}{2}}
+\end{array}\right]
+\end{equation}
+$$
 
-# Show-your-support
-Give a ⭐️ star if this project helped you!
+## Strategy guidance
+As an exmaple, if we want to obtain $\Psi_1 = |1\rangle$ (or $\Psi_2 = |2\rangle$) from $\Psi_{super}=\frac{|1\rangle+|2\rangle}{\sqrt{2}}$, one possible strategy is that first measuring the superposition state (using $M$) and if needed applying Pauli-X gate ($X$) to obtain the desired state. 
 
-# License
-Copyright © 2022 [Jaivardhan Bhola](https://github.com/jaivardhan-bhola).<br />
-This project is [MIT](https://github.com/jaivardhan-bhola/PyChess/blob/main/LICENSE) licensed.
-***
-<div align = "center"><img src="https://madewithlove.now.sh/in?heart=true&colorA=%23505050&colorB=%235032b4&template=for-the-badge&text=India" alt="Made with love in India"></div>
+Alternatively, one can obtain $\Psi_2 = |2\rangle$ by sequentially applying Pauli-Z gate ($Z$) and Hadamard gate ($H$).
+
+There are many other alternative strategies to obtain a desired state, depending on the available quantum gates for operations.
 
