@@ -39,12 +39,14 @@ class Main:
             game.show_last_move(screen)
             game.show_moves(screen)
             game.show_pieces(screen)
+            game.show_wall(screen)
             game.show_hover(screen)
-            
+           
 
             if game.next_player == 'white' and self.cat_captured == False:
                 game.show_bg(screen)  
-                game.show_pieces(screen) 
+                game.show_pieces(screen)
+                game.show_wall(screen) 
                 pygame.display.update()
                 pygame.time.wait(600)
                 if abs(board.cat.state[1])!=1 and abs(board.cat.state[0])!=1:
@@ -52,7 +54,8 @@ class Main:
                 board.collapse()  
                 
                 game.show_bg(screen)  
-                game.show_pieces(screen) 
+                game.show_pieces(screen)
+                game.show_wall(screen) 
                 pygame.display.update()
                 pygame.time.wait(600)
                 pygame.display.update()
@@ -74,7 +77,8 @@ class Main:
               
                 game.play_sound(False)            
                 game.show_bg(screen)  
-                game.show_pieces(screen) 
+                game.show_pieces(screen)
+                game.show_wall(screen) 
                 game.show_last_move(screen)  
                 game.next_turn()
             
@@ -109,6 +113,7 @@ class Main:
                             # show methods 
                             game.show_bg(screen)  
                             game.show_pieces(screen)
+                            game.show_wall(screen)
                             game.show_last_move(screen)
                             game.show_moves(screen)
                             #game.show_pieces(screen)
@@ -129,6 +134,7 @@ class Main:
                             game.show_last_move(screen)
                             game.show_moves(screen)
                             game.show_pieces(screen)
+                            game.show_wall(screen)
                             game.show_hover(screen)
                             dragger.update_blit(screen)
                 
@@ -167,7 +173,8 @@ class Main:
                                         board.cat.state = np.array([1,0])
                                     
                                     game.show_bg(screen)  
-                                    game.show_pieces(screen) 
+                                    game.show_pieces(screen)
+                                    game.show_wall(screen) 
                                     pygame.display.update()
                                     
                                 elif [released_row , released_col] == board.cat.last_location: 
@@ -180,7 +187,8 @@ class Main:
                                         board.cat.last_location = board.cat.location
                                         board.cat.state = np.array([0,1])
                                     game.show_bg(screen)  
-                                    game.show_pieces(screen) 
+                                    game.show_pieces(screen)
+                                    game.show_wall(screen) 
                                     pygame.display.update()
                                 
                                 
@@ -222,6 +230,7 @@ class Main:
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
                                 game.show_pieces(screen)
+                                game.show_wall(screen)
                                 # next turn
                                 game.next_turn()
                     

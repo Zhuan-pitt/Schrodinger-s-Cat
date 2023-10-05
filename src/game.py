@@ -91,13 +91,6 @@ class Game:
         self.buttonH.process(surface,self)
         self.buttonM.process(surface,self)
         
-        for hwall in self.board.wall_list[0]:
-                wall_rec = pygame.Rect(hwall[1]*SQSIZE-SQSIZE/10, hwall[0]*SQSIZE-SQSIZE/10, SQSIZE*1.2,SQSIZE/5) 
-                pygame.draw.rect(surface,wall_col, wall_rec)
-        for vwall in self.board.wall_list[1]:
-                wall_rec = pygame.Rect(vwall[1]*SQSIZE-SQSIZE/10, vwall[0]*SQSIZE-SQSIZE/10, SQSIZE/5,SQSIZE*1.2) 
-                pygame.draw.rect(surface,wall_col, wall_rec)
-
 
     def gameover(self,surface):   # When all levels are completed
         demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
@@ -169,6 +162,14 @@ class Game:
                 # blit
                 pygame.draw.rect(surface, color, rect)
             
+    def show_wall(self, surface):
+        for hwall in self.board.wall_list[0]:
+            wall_rec = pygame.Rect(hwall[1]*SQSIZE-SQSIZE/10, hwall[0]*SQSIZE-SQSIZE/10, SQSIZE*1.2,SQSIZE/5) 
+            pygame.draw.rect(surface,wall_col, wall_rec)
+        for vwall in self.board.wall_list[1]:
+            wall_rec = pygame.Rect(vwall[1]*SQSIZE-SQSIZE/10, vwall[0]*SQSIZE-SQSIZE/10, SQSIZE/5,SQSIZE*1.2) 
+            pygame.draw.rect(surface,wall_col, wall_rec)
+    
 
     def show_hover(self, surface):
         if self.hovered_sqr:
