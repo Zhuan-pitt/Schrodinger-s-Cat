@@ -47,6 +47,12 @@ class M(Piece):
     def __init__(self):
         
         super().__init__('M', 'white', 10000.0)
+        
+class E(Piece):
+    def __init__(self):
+        
+        super().__init__('E', 'white', 10000.0)
+    
 
 class Pawn(Piece):
 

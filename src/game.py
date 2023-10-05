@@ -8,6 +8,7 @@ from src.square import Square
 from src.button import *
 
 demo_col = (255,255,210)
+demo_col1 = (205,205,210)
 txt_col = (18,18,18)
 wall_col = (100,50,0)
 
@@ -27,11 +28,13 @@ class Game:
         self.config = Config()
         self.maximum_step = 10      # Only apply to Level 3
         # Initial number of each gate = 0
-        self.buttonS = ButtonS(885,400,80,80, 1, 'S')
-        self.buttonX = ButtonX(1035,400,80,80,1, 'X')
-        self.buttonZ = ButtonZ(885,500,80,80,1, 'Z')
-        self.buttonH = ButtonH(1035,500,80,80,1,'H')   
-        self.buttonM = ButtonM(885,600,230,80,1, 'M')
+        self.buttonS = ButtonS(885,450,80,80, 1, 'S')
+        self.buttonX = ButtonX(1035,450,80,80,1, 'X')
+        self.buttonZ = ButtonZ(885,550,80,80,1, 'Z')
+        self.buttonH = ButtonH(1035,550,80,80,1,'H')   
+        self.buttonM = ButtonM(885,650,230,80,1, 'M')
+        self.board.e_num = 1
+        
            
 
     # blit methods
@@ -66,6 +69,12 @@ class Game:
         draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 240)
         draw_text(surface, f'{np.round(self.board.cat.state, 2)}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
 
+        demo1 = pygame.Rect(885,350,230,80)            
+        pygame.draw.rect(surface, demo_col1, demo1)
+        draw_text(surface, f'E-capsule: {self.board.e_num}', pygame.font.SysFont('calibri', 25), txt_col,920,375)
+        
+        
+        
         if self.level < 3:
             draw_text(surface, 'Schrödinger\'s cat is on large for:', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 120)
             draw_text(surface, f'{self.board.cat.stepcount} days', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 160)
@@ -159,6 +168,7 @@ class Game:
                 rect = (pos.col * SQSIZE, pos.row * SQSIZE, SQSIZE, SQSIZE)
                 # blit
                 pygame.draw.rect(surface, color, rect)
+            
 
     def show_hover(self, surface):
         if self.hovered_sqr:

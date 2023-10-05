@@ -3,6 +3,7 @@ from src.square import Square
 from src.piece import *
 from src.move import Move
 from src.sound import Sound
+from src.config import Config
 import copy
 import os
 
@@ -14,7 +15,10 @@ class Board():
         self.cat = Cat('white',[6,6])
         self._create()
         #self._add_pieces('white')
+        self.config = Config()
         self._add_pieces('black')
+        self.e_num = 1
+        self.e_onboard = False
         self.gate_onboard = False
         self.level = level
         self.wall_list = wall_list #[horizontal,vertical],[row, col]
@@ -77,11 +81,15 @@ class Board():
 
         # set last move
         self.last_move = move
+        if not self.not_blocked([initial.row,initial.col],[final.row,final.col]):
+                self.e_num=self.e_num-1
+                self.config.collapse_sound.play()
+            
 
     def valid_move(self, piece, move):
         return move in piece.moves
 
-    def add_gate(self,list=[H(),S(), X(),Z(),M()]):
+    def add_gate(self,list=[H(),S(),X(),Z(),M()]):
         if self.gate_onboard ==False:
             x = np.random.randint(ROWS)
             y = np.random.randint(COLS)
@@ -95,6 +103,18 @@ class Board():
 
             else:
                 self.add_gate(list=list)
+        
+    def add_e(self):
+        if self.e_onboard ==False:
+            x = np.random.randint(ROWS)
+            y = np.random.randint(COLS)
+            if self.squares[x][y].isempty() == True:
+                self.squares[x][y] = Square(x,y, E())
+                self.e_onboard = True
+
+            else:
+                self.add_e()
+    
     
     def not_blocked(self,start,end):
         row_move = end[0]-start[0]
@@ -168,19 +188,31 @@ class Board():
 
                 if Square.in_range(possible_move_row, possible_move_col):
                     
-                    if self.not_blocked([row,col],[possible_move_row,possible_move_col]):
-                    
-                    
+                    if self.e_num==0:
+                        if self.not_blocked([row,col],[possible_move_row,possible_move_col]):
+                        
+                        
+                            if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
+                                # create squares of the new move
+                                initial = Square(row, col)
+                                final_piece = self.squares[possible_move_row][possible_move_col].piece
+                                final = Square(possible_move_row, possible_move_col, final_piece)
+                                # create new move
+                                move = Move(initial, final)
+                                
+                                # check potencial checks
+                                piece.add_move(move)
+                    if self.e_num>0:
                         if self.squares[possible_move_row][possible_move_col].isempty_or_enemy(piece.color):
-                            # create squares of the new move
-                            initial = Square(row, col)
-                            final_piece = self.squares[possible_move_row][possible_move_col].piece
-                            final = Square(possible_move_row, possible_move_col, final_piece)
-                            # create new move
-                            move = Move(initial, final)
-                            
-                            # check potencial checks
-                            piece.add_move(move)
+                                # create squares of the new move
+                                initial = Square(row, col)
+                                final_piece = self.squares[possible_move_row][possible_move_col].piece
+                                final = Square(possible_move_row, possible_move_col, final_piece)
+                                # create new move
+                                move = Move(initial, final)
+                                
+                                # check potencial checks
+                                piece.add_move(move)
 
 
         def cat_moves():

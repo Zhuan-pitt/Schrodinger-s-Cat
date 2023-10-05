@@ -34,6 +34,7 @@ class Main:
           
             # show methods
             board.add_gate()
+            board.add_e()
             game.show_bg(screen)
             game.show_last_move(screen)
             game.show_moves(screen)
@@ -207,6 +208,10 @@ class Main:
                                         if gate.name == 'H':
                                             game.buttonH.num = game.buttonH.num+1
                                             board.gate_onboard = False
+                                        if gate.name == 'E':
+                                            game.board.e_num = game.board.e_num+1
+                                            board.e_onboard = False
+                                            
                                 
                                     # sounds
                                 game.play_sound(captured)
@@ -250,7 +255,7 @@ class Main:
                 else:
                     game.gameover(screen)
                 
-            if self.level == 3 and (self.game.maximum_step - self.game.board.cat.stepcount)==0:
+            if self.level == 3 and (self.game.maximum_step - self.game.board.cat.stepcount)==1:
                 game.lose(screen)
             
             pygame.display.update()
