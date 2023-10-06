@@ -64,9 +64,10 @@ Alternatively, one can obtain $\Psi_1 = |1\rangle$ by sequentially applying Paul
 There are many other alternative strategies to obtain a desired state, depending on the available quantum gates for operations.
 
 ## Installation
-To start the game, make sure you have installed the Python Library pygame 2.1.2 or newer. It can be installed via pip:
+To start the game, make sure you have installed the Python Library ```numpy``` and ```pygame```. It can be installed via pip:
 ```
 pip install pygame
+pip install numpy
 ```
 The game can be downloaded via
 ```
