@@ -58,7 +58,7 @@ It is easy to find that $Z=S^2$.
 ## Strategy Guidance
 As an example, if we want to obtain $\Psi_0 = |0\rangle$ (or $\Psi_1 = |1\rangle$) from $\Psi_{super}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}$, one possible strategy is that first measuring the superposition state (using $M$) and if needed applying Pauli-X gate ($X$) to obtain the desired state. 
 
-Alternatively, one can obtain $\Psi_0 = |0\rangle$ by sequentially applying Pauli-Z gate ($Z$) and Hadamard gate ($H$) on $\Psi_{super}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}$.
+Alternatively, one can obtain $\Psi_1 = |1\rangle$ by sequentially applying Pauli-Z gate ($Z$) and Hadamard gate ($H$) on $\Psi_{super}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}$.
 
 There are many other alternative strategies to obtain a desired state, depending on the available quantum gates for operations.
 
