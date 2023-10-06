@@ -235,7 +235,8 @@ class Game:
         img_center = WIDTH // 2, HEIGHT // 2
         img_rect = img.get_rect(center=img_center)
         surface.blit(img, img_rect)
-        
+
+    def show_starttext(self, surface):
         img_file ='assets/images/imgs-80px/starttext.png'
         img = pygame.image.load(img_file)
         img = pygame.transform.scale(img,(WIDTH,HEIGHT))

@@ -2,24 +2,35 @@ import pygame
 import numpy as np
 from src.config import Config
 import os
+# def update_piece(game):
+#     state = game.board.cat.state
+#     if np.linalg.norm(state-np.array([1,0])) <=1e-10:
+#             game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece =game.board.cat
+#             game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = None
+
+#     elif np.linalg.norm(state-np.array([0,1])) <=1e-10:
+#             game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = None
+#             game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
+#     elif np.linalg.norm(state-np.sqrt(1/2)*np.array([1,1])) <=1e-10:
+#             game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = game.board.cat
+#             game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
+
+#     elif np.linalg.norm(state-np.sqrt(1/2)*np.array([1,-1])) <=1e-10:
+#             game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = game.board.cat
+#             game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
+
 def update_piece(game):
     state = game.board.cat.state
-    if np.linalg.norm(state-np.array([1,0])) <=1e-10:
-            game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece =game.board.cat
-            game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = None
+    if abs(state[1]) <=1e-3:
+        game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece =game.board.cat
+        game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = None
 
-    elif np.linalg.norm(state-np.array([0,1])) <=1e-10:
-            game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = None
-            game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
-    elif np.linalg.norm(state-np.sqrt(1/2)*np.array([1,1])) <=1e-10:
-            game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = game.board.cat
-            game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
-
-    elif np.linalg.norm(state-np.sqrt(1/2)*np.array([1,-1])) <=1e-10:
-            game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = game.board.cat
-            game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
-
-
+    elif abs(state[0]) <=1e-10:
+        game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = None
+        game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
+    else:
+        game.board.squares[ game.board.cat.last_location[0]][ game.board.cat.last_location[1]].piece = game.board.cat
+        game.board.squares[ game.board.cat.location[0]][ game.board.cat.location[1]].piece = game.board.cat
 
 class Button():
 

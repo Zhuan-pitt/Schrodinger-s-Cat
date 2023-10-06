@@ -1,8 +1,8 @@
-# \[The name of game\]
+# Catch Schrödinger's Cat
 The Kingdom of Physics is in chaos since King Schrödinger's cat is missing. The king sends his greatest knight, you, to catch his cat. However, this unusual cat possesses an extraordinary ability of superposition: it can be found simultaneously at two positions. Will you be able to track down the mysterious cat and bring the Kingdom of Physics back to calm? 
 
 ## Rules
-The game takes place on a 10 $\times$ 10 chessboard. At each step, the cat can move one square in any direction (the same as Kings in chess), and the knight can move as a "L" shape (the same as Knights in chess). The cat and the knight move alternatively. You are required to use one Knight to capture the cat. 
+The game takes place on a 10 $\times$ 10 chessboard.yEveryday the cat can move one or two squares in any direction (the same as Kings in chess, but it can move one or two steps), and the knight can move as a "L" shape (the same as Knights in chess). The cat and the knight move alternatively. You are required to use one Knight to capture the cat. 
 
 However, the cat can be in a superposition state of two locations: the origin and the destination. It will only collapse to a determined location after the knight makes its move. In order to have a better chance of capturing the cat, you can apply quantum gates on the cat to change its state before moving the knight. You can find four different quantum gates randomly located on the board: Pauli-X gate ($X$), Pauli-Z gate ($Z$), Hadamard gate ($H$), and the phase gate ($S$). Additionally, you can find M on the board representing Measure, which allows you to measure the superposition state before moving the knight.
 
@@ -48,9 +48,10 @@ $$
 H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}
 1 & 1 \\
 1 & -1
-\end{array}\right]
+\end{array}\right].
 \end{equation}
 $$
+Hadamard gate can be used to change the basis, i.e., $HZH=X$.
 
 Phase gate $S$ is defined as
 $$
@@ -58,10 +59,10 @@ $$
 S=\left[\begin{array}{cc}
 1 & 0 \\
 0 & e^{i \frac{\pi}{2}}
-\end{array}\right]
+\end{array}\right],
 \end{equation}
 $$
-
+It is easy to find that $Z=S^2$.
 ## Strategy Guidance
 As an example, if we want to obtain $\Psi_1 = |1\rangle$ (or $\Psi_2 = |2\rangle$) from $\Psi_{super}=\frac{|1\rangle+|2\rangle}{\sqrt{2}}$, one possible strategy is that first measuring the superposition state (using $M$) and if needed applying Pauli-X gate ($X$) to obtain the desired state. 
 

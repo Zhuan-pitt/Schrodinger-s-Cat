@@ -29,16 +29,25 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         
-        game_state = "start_menu"
+        game_state = "start_pic"
         
 
         tutorial=True
+      
 
         while True:
-            
+            if game_state == 'start_pic':
+                pygame.display.update()
+                game.show_start(main.screen)
+                pygame.display.update()
+                pygame.time.wait(2000)
+                game_state = 'start_menu'
+
             if game_state == 'start_menu':
                 pygame.display.update()
-                game.show_start(screen)
+                game.show_start(main.screen)
+                game.show_starttext(screen)
+                
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
@@ -345,4 +354,5 @@ class Main:
 
 
 main = Main()
+
 main.mainloop()
