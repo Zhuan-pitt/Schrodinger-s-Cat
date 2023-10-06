@@ -19,38 +19,46 @@ $$
 Therefore, the cat has an equal probability of remaining at the origin or jumping to the destination.
 
 The Pauli-X gate is defined as 
-$$X=\left[\begin{array}{ll}
+```math
+X=\left[\begin{array}{ll}
 0 & 1 \\
 1 & 0
-\end{array}\right]$$
+\end{array}\right]
+```
 which can switch state $|0\rangle$ to $|1\rangle$ and $|1\rangle$ to $|0\rangle$.
 
 
 The Pauli-Z gate is defined as 
-$$Z=\left[\begin{array}{cc}
+```math
+Z=\left[\begin{array}{cc}
 1 & 0 \\
 0 & -1
-\end{array}\right]$$
+\end{array}\right]
+```
 which can switch state $|1\rangle$ to $-|1\rangle$ and keep $|0\rangle$ unchanged.
 
 
 Hadamard gate $H$ is defined
-$$H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}
+```math
+H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}
 1 & 1 \\
 1 & -1
-\end{array}\right].$$
+\end{array}\right].
+```
 Hadamard gate can be used to change the basis, i.e., $HZH=X$.
 
 Phase gate $S$ is defined as
-$$S=\left[\begin{array}{cc}
+```math
+S=\left[\begin{array}{cc}
 1 & 0 \\
 0 & e^{i \frac{\pi}{2}}
-\end{array}\right],$$
+\end{array}\right].
+```
 It is easy to find that $Z=S^2$.
 ## Strategy Guidance
 As an example, if we want to obtain $\Psi_0 = |0\rangle$ (or $\Psi_1 = |1\rangle$) from $\Psi_{super}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}$, one possible strategy is that first measuring the superposition state (using $M$) and if needed applying Pauli-X gate ($X$) to obtain the desired state. 
 
-Alternatively, one can obtain $\Psi_1 = |1\rangle$ by sequentially applying Pauli-Z gate ($Z$) and Hadamard gate ($H$).
+Alternatively, one can obtain $\Psi_0 = |0\rangle$ by sequentially applying Pauli-Z gate ($Z$) and Hadamard gate ($H$) on $\Psi_{super}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}$.
 
 There are many other alternative strategies to obtain a desired state, depending on the available quantum gates for operations.
 
