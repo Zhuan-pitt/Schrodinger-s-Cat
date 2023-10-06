@@ -289,25 +289,6 @@ class Main:
                         # key press
                         elif event.type == pygame.KEYDOWN:
                             
-
-                            if event.key == pygame.K_r:
-                            
-                                self.level += 1
-                                
-                                
-                                
-                                tutorial = True
-                                game.reset(self.level,self.wall_list[self.level-1])
-                                game = self.game
-                                
-                                board = self.game.board
-                                if self.level == 2:
-                                    self.game.buttonX.num =0
-                                    self.game.buttonZ.num =0
-                                    self.game.buttonM.num =0
-                                dragger = self.game.dragger
-                                self.cat_captured = False
-                            
                             if event.key == pygame.K_q:
                                 pygame.quit()
                                 sys.exit()
@@ -322,14 +303,45 @@ class Main:
                             
                             game.nextlevel(screen)
                             
+                            for event in pygame.event.get():
+                                if event.type == pygame.KEYDOWN:
+                                    if event.key == pygame.K_r:
+                                        self.level += 1
+                                
+                                
+                                
+                                        tutorial = True
+                                        game.reset(self.level,self.wall_list[self.level-1])
+                                        game = self.game
+                                        
+                                        board = self.game.board
+                                        if self.level == 2:
+                                            self.game.buttonX.num =0
+                                            self.game.buttonZ.num =0
+                                            self.game.buttonM.num =0
+                                        dragger = self.game.dragger
+                                        self.cat_captured = False
+                            
                             
                         else:
                             game.gameover(screen)
                     pygame.display.update()    
-                    if self.level == 3 and (self.game.maximum_step - self.game.board.cat.stepcount)==0:
-                        game.lose(screen)
+                    
+                    if self.level == 3 and (self.game.maximum_step - self.game.board.cat.stepcount)<=0:
+                        game_state = 'lose'
+                        
+            if game_state == 'lose':
                 
-                
+                pygame.display.update()
+                game.lose(screen)
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_q:
+                            pygame.quit()
+                            sys.exit()
+                    elif event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
 
 
 main = Main()

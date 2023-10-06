@@ -130,7 +130,7 @@ class Game:
         img_rect = img.get_rect(center=img_center)
         surface.blit(img, img_rect)
         draw_text(surface, 'You lose! Press Q to quit.' ,\
-        pygame.font.SysFont('calibri', 40), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+        pygame.font.SysFont('calibri', 40), txt_col,55+COLS//6*SQSIZE, COLS//5*SQSIZE+70)
 
     def nextlevel(self,surface):
         
