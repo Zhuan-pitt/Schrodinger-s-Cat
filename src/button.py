@@ -104,7 +104,7 @@ class Button():
 
 class ButtonS(Button):
     def command(self,surface1,game):
-        S = np.array([[1,0],[0,1]])
+        S = np.array([[1,0],[0,1j]],dtype = complex)
         game.board.cat.state = S@game.board.cat.state 
         game.show_pieces(surface1) 
 

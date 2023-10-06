@@ -12,14 +12,14 @@ class Board():
     def __init__(self, level, wall_list=[[[3,3],[3,4],[3,5],[3,8]],[[3,3],[4,3],[5,3]]]):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
-        self.cat = Cat('white',[6,6])
+        self.cat = Cat('white',[4,6])
         self._create()
         #self._add_pieces('white')
         self.config = Config()
         self._add_pieces('black')
         self.e_num = 1
-        self.e_onboard = False
-        self.gate_onboard = False
+        self.e_onboard = 0
+        self.gate_onboard = 0
         self.level = level
         self.wall_list = wall_list #[horizontal,vertical],[row, col]
         
@@ -44,7 +44,7 @@ class Board():
     def collapse(self):
         # console board move update
         
-        p_new = self.cat.state[1]**2/(np.linalg.norm(self.cat.state))**2
+        p_new = abs(self.cat.state[1])**2/(np.linalg.norm(self.cat.state))**2
         if np.random.random()<=p_new and self.cat.last_location != self.cat.location:
             self.squares[ self.cat.last_location[0]][ self.cat.last_location[1]].piece = None
             self.cat.state = np.array([0,1])
@@ -56,7 +56,7 @@ class Board():
         self.cat.clear_moves()
     
     def measure(self):
-        p_new = self.cat.state[1]**2/(np.linalg.norm(self.cat.state))**2
+        p_new = abs(self.cat.state[1])**2/(np.linalg.norm(self.cat.state))**2
         if np.random.random()<=p_new:
             self.squares[ self.cat.last_location[0]][ self.cat.last_location[1]].piece = None
             self.cat.state = np.array([0,1])
@@ -90,7 +90,7 @@ class Board():
         return move in piece.moves
 
     def add_gate(self,list=[H(),S(),X(),Z(),M()]):
-        if self.gate_onboard ==False:
+        while self.gate_onboard <= 3 :
             x = np.random.randint(ROWS)
             y = np.random.randint(COLS)
             if self.squares[x][y].isempty() == True:
@@ -99,18 +99,18 @@ class Board():
                 elif self.level == 2:
                     p = np.random.randint(2)    # Only H gate and S gate are available in Level 2
                 self.squares[x][y] = Square(x,y, (list[p]))
-                self.gate_onboard = True
+                self.gate_onboard +=1
 
             else:
                 self.add_gate(list=list)
         
     def add_e(self):
-        if self.e_onboard ==False:
+        while  self.e_onboard <2:
             x = np.random.randint(ROWS)
             y = np.random.randint(COLS)
             if self.squares[x][y].isempty() == True:
                 self.squares[x][y] = Square(x,y, E())
-                self.e_onboard = True
+                self.e_onboard +=1
 
             else:
                 self.add_e()

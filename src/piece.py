@@ -54,16 +54,10 @@ class E(Piece):
         super().__init__('E', 'white', 10000.0)
     
 
-class Pawn(Piece):
-
-    def __init__(self, color):
-        self.dir = -1 if color == 'white' else 1
-        self.en_passant = False
-        super().__init__('pawn', color, 1.0)
 
 class Cat(Piece):
     def __init__(self, color,locaton,stepcount=0):
-        self.state = np.array([1,0])
+        self.state = np.array([1,0],dtype = complex)
         self.last_location = locaton
         self.location = locaton
         self.stepcount = stepcount
@@ -76,25 +70,3 @@ class Knight(Piece):
 
     def __init__(self, color):
         super().__init__('knight', color, 3.0)
-
-class Bishop(Piece):
-
-    def __init__(self, color):
-        super().__init__('bishop', color, 3.001)
-
-class Rook(Piece):
-
-    def __init__(self, color):
-        super().__init__('rook', color, 5.0)
-
-class Queen(Piece):
-
-    def __init__(self, color):
-        super().__init__('queen', color, 9.0)
-
-class King(Piece):
-
-    def __init__(self, color):
-        self.left_rook = None
-        self.right_rook = None
-        super().__init__('king', color, 10000.0)

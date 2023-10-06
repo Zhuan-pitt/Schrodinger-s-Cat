@@ -8,7 +8,7 @@ from src.square import Square
 from src.button import *
 
 demo_col = (255,255,210)
-demo_col1 = (205,205,210)
+demo_col1 = (223,182,1)
 txt_col = (18,18,18)
 wall_col = (100,50,0)
 
@@ -29,9 +29,10 @@ class Game:
         self.maximum_step = 10      # Only apply to Level 3
         # Initial number of each gate = 0
         self.buttonS = ButtonS(885,450,80,80, 1, 'S')
-        self.buttonX = ButtonX(1035,450,80,80,1, 'X')
+        self.buttonH = ButtonH(1035,450,80,80,1,'H')   
+        self.buttonX = ButtonX(1035,550,80,80,1, 'X')
         self.buttonZ = ButtonZ(885,550,80,80,1, 'Z')
-        self.buttonH = ButtonH(1035,550,80,80,1,'H')   
+        
         self.buttonM = ButtonM(885,650,230,80,1, 'M')
         self.board.e_num = 1
         
@@ -63,12 +64,31 @@ class Game:
                     # color
                     color = theme.bg.dark if (row + col) % 2 == 0 else theme.bg.light
         
+        
         demo = pygame.Rect(COLS*SQSIZE, 0, WIDTH - COLS*SQSIZE, HEIGHT)            
         pygame.draw.rect(surface, demo_col, demo)
+        
+
+        
+        
+        
         draw_text(surface, f'Level: {self.level}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 40)
         draw_text(surface, 'Current cat\'s state:' , pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 240)
-        draw_text(surface, f'{np.round(self.board.cat.state, 2)}', pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
-
+        if abs(self.board.cat.state[0])<=1e-3:
+            draw_text(surface, f"|1>", pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
+        elif abs(self.board.cat.state[1])<=1e-3:
+            draw_text(surface, f"|0>", pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
+        
+        else:
+            b=''
+            r = self.board.cat.state[1]/self.board.cat.state[0]
+            if r==1 or r==1j:
+                draw_text(surface, f"|0> + "+ \
+                    f"{r if r.imag else b}|1> ", pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
+            if r==-1 or r==-1j:
+                draw_text(surface, f"|0> - "+ \
+                    f"{-r+0 if r.imag else b}|1> ", pygame.font.SysFont('calibri', 25), txt_col,20+COLS*SQSIZE, 280)
+            
         demo1 = pygame.Rect(885,350,230,80)            
         pygame.draw.rect(surface, demo_col1, demo1)
         draw_text(surface, f'E-capsule: {self.board.e_num}', pygame.font.SysFont('calibri', 25), txt_col,920,375)
@@ -93,24 +113,38 @@ class Game:
         
 
     def gameover(self,surface):   # When all levels are completed
-        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
-        pygame.draw.rect(surface, demo_col, demo)
-        draw_text(surface, 'Congratulations! Press Q to quit.' ,\
-            pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+        
+        img_file ='assets/images/imgs-80px/end.png'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(800,600))
+        img_center = 400,400
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
+
     
     def lose(self, surface):
-        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
-        pygame.draw.rect(surface, demo_col, demo)
+        img_file ='assets/images/imgs-80px/paper.png'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(9*SQSIZE,3*SQSIZE))
+        img_center = 400,260
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
         draw_text(surface, 'You lose! Press Q to quit.' ,\
-        pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
+        pygame.font.SysFont('calibri', 40), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
 
     def nextlevel(self,surface):
-        demo = pygame.Rect(COLS//6*SQSIZE, COLS//5*SQSIZE,COLS//5*SQSIZE*4, HEIGHT//4) 
-        pygame.draw.rect(surface, demo_col, demo)
-        draw_text(surface, f'You capture Schrödinger\'s cat in {self.board.cat.stepcount} days!' ,\
+        
+        img_file ='assets/images/imgs-80px/paper.png'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(9*SQSIZE,3*SQSIZE))
+        img_center = 400,260
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
+        
+        draw_text(surface, f'You captured Schrödinger\'s cat in {self.board.cat.stepcount} days!' ,\
             pygame.font.SysFont('calibri', 30), txt_col,15+COLS//6*SQSIZE, COLS//5*SQSIZE+40)
         draw_text(surface, f'Press R to enter next level ' ,\
-            pygame.font.SysFont('calibri', 30), txt_col,10+COLS//3*SQSIZE, COLS//3*SQSIZE+60)
+            pygame.font.SysFont('calibri', 30), txt_col,COLS//3*SQSIZE, COLS//3*SQSIZE+60)
         
 
     def show_pieces(self, surface):
@@ -129,7 +163,13 @@ class Game:
                         piece.texture_rect = img.get_rect(center=img_center)
                         surface.blit(img, piece.texture_rect)
 
-    
+    def show_state(self,surface):
+        if self.board.cat.location == self.board.cat.last_location:
+            return 
+        draw_text(surface, f"|0>", pygame.font.SysFont('calibri', 20), txt_col,self.board.cat.last_location[1]*SQSIZE+53,\
+                  self.board.cat.last_location[0]*SQSIZE+4)
+        draw_text(surface, f"|1>", pygame.font.SysFont('calibri', 20), txt_col,self.board.cat.location[1]*SQSIZE+53,\
+                  self.board.cat.location[0]*SQSIZE+4)
 
     
     def show_moves(self, surface):
@@ -188,13 +228,34 @@ class Game:
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]
 
-    
-    
+    def show_start(self,surface):
+        img_file ='assets/images/imgs-80px/start.jpeg'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(WIDTH,HEIGHT))
+        img_center = WIDTH // 2, HEIGHT // 2
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
+        
+        img_file ='assets/images/imgs-80px/starttext.png'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(WIDTH,HEIGHT))
+        img_center = WIDTH // 2, HEIGHT // 2
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
+        
+        
+        
+    def show_back(self,surface):
+        img_file ='assets/images/imgs-80px/readme.png'
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(800,600))
+        img_center = WIDTH // 2, HEIGHT // 2
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
     def play_sound(self, captured=False):
         if captured:
             self.config.capture_sound.play()
         else:
             self.config.move_sound.play()
-
     def reset(self, level,wall_list):
         self.__init__(level,wall_list)
