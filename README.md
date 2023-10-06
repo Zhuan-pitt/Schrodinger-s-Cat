@@ -11,11 +11,11 @@ Walls are added to the chessboard. The cat is always able to tunnel through the 
 ## Theory of Quantum gates behind the game
 
 Here, we denote the state of the cat at the origin at each step as $|0\rangle$ and at the destination as $|1\rangle$. After the cat makes the move, it will be in the superposition state of $|0\rangle$ and $|1\rangle$, i.e.
-$$
+```math
 \begin{equation}
-\Psi_{cat}=\frac{|0\rangle+|1\rangle}{\sqrt{2}} \quad \text{or} \quad \Psi_{cat}=\frac{|0\rangle+|1\rangle}{\sqrt{2}}
+\Psi_{cat}=\frac{|0\rangle+|1\rangle}{\sqrt{2}} \quad \text{or} \quad \Psi_{cat}=\frac{|0\rangle-|1\rangle}{\sqrt{2}}
 \end{equation}
-$$
+```
 Therefore, the cat has an equal probability of remaining at the origin or jumping to the destination.
 
 The Pauli-X gate is defined as 
