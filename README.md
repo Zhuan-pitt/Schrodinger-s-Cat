@@ -62,7 +62,18 @@ Alternatively, one can obtain $\Psi_1 = |1\rangle$ by sequentially applying Paul
 
 There are many other alternative strategies to obtain a desired state, depending on the available quantum gates for operations.
 
-## Install the game
-
+## Installation
+To start the game, make sure you have installed the Python Library pygame 2.1.2 or newer. It can be installed via pip:
+```
+pip install pygame
+```
+The game can be downloaded via
+```
+git clone https://github.com/Zhuan-pitt/Schrodinger-s-Cat.git
+```
+Open the downloaded folder and run
+```
+python main.py
+```
 ## Note
 
