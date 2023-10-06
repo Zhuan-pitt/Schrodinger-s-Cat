@@ -244,6 +244,19 @@ class Game:
         surface.blit(img, img_rect)
         
         
+    def show_tutorial(self,surface):
+        self.show_bg(surface)
+        if self.level == 1:
+            img_file ='assets/images/imgs-80px/level1.png'
+        if self.level ==2:
+            img_file ='assets/images/imgs-80px/level2.png'
+        if self.level ==3:
+            img_file ='assets/images/imgs-80px/level3.png'    
+        img = pygame.image.load(img_file)
+        img = pygame.transform.scale(img,(800,600))
+        img_center = WIDTH // 2, HEIGHT // 2
+        img_rect = img.get_rect(center=img_center)
+        surface.blit(img, img_rect)
         
     def show_back(self,surface):
         img_file ='assets/images/imgs-80px/readme.png'
