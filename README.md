@@ -1,6 +1,9 @@
 # Catch Schrödinger's Cat
 The Kingdom of Physics is in chaos since King Schrödinger's cat is missing. The king sends his greatest knight, you, to catch his cat. However, this unusual cat possesses an extraordinary ability of superposition: it can be found simultaneously at two positions. Will you be able to track down the mysterious cat and bring the Kingdom of Physics back to calm? 
 
+<img width="1198" alt="start" src="https://github.com/Zhuan-pitt/Schrodinger-s-Cat/assets/70167028/8092da88-bc2f-4054-bc1d-b9f098f3cfbb">
+
+
 ## Rules
 The game takes place on a 10 $\times$ 10 chessboard. Everyday the cat can move one or two squares in any direction (the same as Kings in chess, but it can move one or two steps), and the knight can move as a "L" shape (the same as Knights in chess). The cat and the knight move alternatively. You are required to use one Knight to capture the cat. 
 
