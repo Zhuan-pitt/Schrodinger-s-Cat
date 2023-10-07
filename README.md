@@ -8,7 +8,7 @@ However, the cat can be in a superposition state of two locations: the origin an
 
 Walls are added to the chessboard. The cat is always able to tunnel through the wall (due to its high energy), but the knight will have to collect Energy Capsules from the chessboard to tunnel through the wall via the quantum tunneling effect.
 
-A demonstrating video of the game can be found HERE.
+A demonstrating video of the game can be found [here](https://youtu.be/Soxb8MSjrIA).
 ## Theory of Quantum gates behind the game
 
 Here, we denote the state of the cat at the origin at each step as $|0\rangle$ and at the destination as $|1\rangle$. After the cat makes the move, it will be in the superposition state of $|0\rangle$ and $|1\rangle$, i.e.
